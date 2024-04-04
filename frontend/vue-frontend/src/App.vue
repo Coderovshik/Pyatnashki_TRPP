@@ -1,21 +1,26 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
+  <div class="wrapper">
+    <Header />
+    <Game />
+  </div>
 </template>
 
 <script>
+import Header from "./components/Header.vue";
+import Game from "./components/Game.vue";
+
 export default {
   name: "App",
-  components: {},
+  components: { Header, Game },
 };
 </script>
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  min-width: 100vw;
+  min-height: 100vh;
+  background-color: #ffffdd;
 }
 </style>
