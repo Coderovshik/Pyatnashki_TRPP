@@ -7,6 +7,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import ru.solonchev.learnProject.user.User;
 
 import java.security.Key;
 import java.util.Date;
@@ -20,25 +21,36 @@ public class JwtService {
     private static final String SECRET_KEY = "92e17dc8bfac0842d5068f383dd93181e78ee27d3abdb3ed6df848c134b446e5";
 
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+        return extractClaim(token, (claims) -> claims.get(String.valueOf("email"))).toString();
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public Integer extractId(String token) {
+        return extractClaim(token, (claims -> (Integer) (claims.get(String.valueOf("user_id")))));
+    }
+
+    public String generateToken(Claims claims) {
+        return generateToken(new HashMap<>(), claims);
     }
 
     public String generateToken(
             Map<String, Object> extraClaims,
-            UserDetails userDetails
+            Claims claims
     ) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
+                .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    public Claims generateClaims(User user) {
+        Claims claims = Jwts.claims();
+        claims.put("user_id", user.getId());
+        claims.put("email", user.getEmail());
+        return claims;
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
