@@ -1,6 +1,7 @@
 package ru.solonchev.learnProject.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,11 +23,18 @@ public class AppController {
     public ResponseEntity<UserResponse> getUser(
             @RequestHeader(name = "Authorization") String bearerToken
     ) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Access-Control-Allow-Origin", "*");
+        headers.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
+        headers.set("Access-Control-Allow-Headers", "Content-Type, X-Auth-Token, Origin, Authorization");
         final String token = bearerToken.substring(7);
         final UserResponse userResponse = UserResponse.builder()
                 .id(jwtService.extractId(token))
                 .email(jwtService.extractUsername(token))
                 .build();
-        return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        //return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(userResponse);
     }
 }
