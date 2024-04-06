@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  postgresql_db:
+    image: postgres:16
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: jwt_security
+      POSTGRES_USER: mark
+      POSTGRES_PASSWORD: password
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U mark -d jwt_security" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  backend:
+    build: ./
+    depends_on:
+      postgresql_db:
+        condition: service_healthy
+    ports:
+      - "9999:9999"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql_db/jwt_security
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_DATASOURCE_USERNAME=mark
