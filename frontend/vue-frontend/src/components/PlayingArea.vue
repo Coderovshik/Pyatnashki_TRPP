@@ -3,7 +3,7 @@
     <div class="game-area">
       <Plate v-for="num in plates" :key="num" :value="num" />
     </div>
-    <button class="game-button">Новая игра</button>
+    <button @click="init()" class="game-button">Новая игра</button>
   </div>
 </template>
 
@@ -14,10 +14,44 @@ export default {
   components: { Plate },
   data() {
     return {
-      plates: [...Array(16).keys()].map((i) => i + 1),
+      plates: [...Array(16).keys()]
+        .map((i) => i + 1)
+        .sort(() => Math.random() - 0.5),
     };
   },
-  methods: {},
+  methods: {
+    setInvisiblePlate() {
+      const platesList = Array.from(
+        document.querySelectorAll(".plate-wrapper")
+      );
+      for (let i = 0; i < platesList.length; i++) {
+        if (platesList[i].innerText === "16") {
+          platesList[i].classList.add("sixteen-plate");
+        }
+      }
+    },
+    createMatrix() {
+      const platesList = Array.from(
+        document.querySelectorAll(".plate-wrapper")
+      );
+      const platesMatrix = [[], [], [], []];
+      let x = 0;
+      let y = 0;
+      for (let i = 0; i < platesList.length; i++) {
+        if (x >= 4) {
+          x = 0;
+          y++;
+        }
+        platesMatrix[y][x] = Number(platesList[i].innerText);
+        x++;
+      }
+      return platesMatrix;
+    },
+    init() {
+      this.setInvisiblePlate();
+      this.createMatrix();
+    },
+  },
 };
 </script>
 
@@ -54,5 +88,9 @@ export default {
   line-height: 100%;
   color: #016a70;
   cursor: pointer;
+}
+
+.sixteen-plate {
+  opacity: 0;
 }
 </style>
