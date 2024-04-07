@@ -1,6 +1,16 @@
-version: "3.8"
+version: "3.9"
 services:
-  postgresql_db`:
+  web:
+    build:
+      context: frontend/vue-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80"
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - backend
+  postgresql_db:
     image: postgres:16
     ports:
       - "5435:5432"
@@ -14,7 +24,7 @@ services:
       timeout: 5s
       retries: 5
   backend:
-    build: ./
+    build: ./registration
     depends_on:
       postgresql_db:
         condition: service_healthy

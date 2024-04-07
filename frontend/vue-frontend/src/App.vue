@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div @load="getAuthToken()" class="wrapper">
     <Header />
     <Game />
   </div>
@@ -20,9 +20,33 @@ export default {
   },
   methods: {
     async getAuthToken() {
-      const res = await fetch("http://localhost:9999/api/v1/auth/register");
-      const data = await res.json();
-      const token = data.token;
+      console.log("Started");
+      const data = { email: "test@email.com", password: "qwerty123" };
+      let res = await fetch("http://localhost:9999/api/v1/auth/register", {
+        method: "POST",
+        Headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      console.log(res.status);
+      res = await fetch("http://localhost:9999/api/v1/auth/authenticate", {
+        method: "POST",
+        Headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      console.log(res.status);
+      let token = await res.json();
+      res = await fetch("http://localhost:9999/api/v1/auth/authenticate", {
+        method: "GET",
+        Headers: {
+          Authorization: "Bearer " + token.token,
+        },
+      });
+      data = res.json();
+      console.log(data);
     },
   },
 };

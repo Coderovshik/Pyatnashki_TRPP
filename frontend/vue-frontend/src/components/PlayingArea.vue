@@ -14,12 +14,23 @@ export default {
   components: { Plate },
   data() {
     return {
-      plates: [...Array(16).keys()]
-        .map((i) => i + 1)
-        .sort(() => Math.random() - 0.5),
+      plates: [...Array(16).keys()].map((i) => i + 1),
+      timer: 0,
     };
   },
   methods: {
+    createMatrix() {
+      let x = 0;
+      let y = 0;
+      for (let i = 0; i < this.plates.length; i++) {
+        if (x >= 4) {
+          x = 0;
+          y++;
+        }
+        this.$globalMatrix[y][x] = this.plates[i];
+        x++;
+      }
+    },
     setInvisiblePlate() {
       const platesList = Array.from(
         document.querySelectorAll(".plate-wrapper")
@@ -30,27 +41,17 @@ export default {
         }
       }
     },
-    createMatrix() {
-      const platesList = Array.from(
-        document.querySelectorAll(".plate-wrapper")
-      );
-      const platesMatrix = [[], [], [], []];
-      let x = 0;
-      let y = 0;
-      for (let i = 0; i < platesList.length; i++) {
-        if (x >= 4) {
-          x = 0;
-          y++;
-        }
-        platesMatrix[y][x] = Number(platesList[i].innerText);
-        x++;
-      }
-      return platesMatrix;
-    },
     init() {
-      this.setInvisiblePlate();
+      this.plates = this.plates.sort(() => Math.random() - 0.5);
       this.createMatrix();
+      setInterval(() => {
+        this.$globalTime.value++;
+        console.log(this.$globalTime);
+      }, 1000);
     },
+  },
+  mounted() {
+    this.setInvisiblePlate();
   },
 };
 </script>
