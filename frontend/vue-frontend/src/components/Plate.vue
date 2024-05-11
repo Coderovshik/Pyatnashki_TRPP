@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import AXIOS from "@/http-common";
+
 export default {
   props: { value: Number },
   data() {
@@ -33,6 +35,17 @@ export default {
         }
         document.querySelector(".game-area").style.display = "flex";
         document.querySelector(".win-wrapper").style.display = "flex";
+        const score = { score: this.$globalMoves + this.$globalTime };
+        AXIOS.post(
+          "http://localhost:8081/scores?user_id=" +
+            localStorage.getItem("UserId"),
+          score,
+          {
+            headers: {
+              "Content-type": "application/json",
+            },
+          }
+        );
       }
     },
     findCoods(matrix, plate) {

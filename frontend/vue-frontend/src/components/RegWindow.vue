@@ -113,8 +113,10 @@ export default {
           },
         }
       )
-        .then(() => {
-          localStorage.setItem("authenticate", true);
+        .then((response) => {
+          localStorage.setItem("authorized", true);
+          localStorage.setItem("userId", response.data.id);
+          localStorage.setItem("userName", response.data.username);
           this.closeForm(".log-form");
           document.querySelector(".reg-window").style.display = "none";
         })
