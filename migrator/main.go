@@ -53,10 +53,11 @@ func main() {
 	}
 
 	for range 10 {
-		res, _ := http.Get("http://backend:9999/actuator")
-		if res.StatusCode == 200 {
+		_, err := http.Get("http://backend:9999/actuator")
+		if err == nil {
 			break
 		}
+
 		time.Sleep(3 * time.Second)
 	}
 
