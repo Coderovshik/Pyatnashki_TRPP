@@ -26,6 +26,10 @@ func NewApp(cfg *config.Config) *App {
 	c := controller.NewScoreController(log, s)
 
 	r.HandleFunc("GET /top-scores", c.GetTopScores)
+
+	r.HandleFunc("OPTIONS /top-scores", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
 	r.HandleFunc("POST /scores", c.SetScore)
 
 	return &App{
