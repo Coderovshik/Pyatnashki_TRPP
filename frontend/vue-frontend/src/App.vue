@@ -1,19 +1,20 @@
 <template>
   <div class="wrapper">
-    <!-- <RegWindow /> -->
+    <RegWindow />
     <Header />
     <Game />
   </div>
 </template>
 
 <script>
+import RegWindow from "./components/RegWindow.vue";
 import Header from "./components/Header.vue";
 import Game from "./components/Game.vue";
 import AXIOS from "@/http-common";
 
 export default {
   name: "App",
-  components: { Header, Game },
+  components: { RegWindow, Header, Game },
   data() {
     return {};
   },

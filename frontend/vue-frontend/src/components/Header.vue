@@ -15,7 +15,7 @@
 export default {
   data() {
     return {
-      username: "Artem",
+      username: localStorage.getItem("userName"),
     };
   },
 };

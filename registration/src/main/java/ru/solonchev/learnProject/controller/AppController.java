@@ -1,11 +1,9 @@
 package ru.solonchev.learnProject.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.solonchev.learnProject.config.UserRequest;
 import ru.solonchev.learnProject.config.UserResponse;
 import ru.solonchev.learnProject.service.JwtService;
 
