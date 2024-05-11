@@ -11,6 +11,7 @@ let app = createApp(App);
 app.config.globalProperties.$globalMatrix = [[], [], [], []];
 app.config.globalProperties.$globalTime = ref(0);
 app.config.globalProperties.$globalMoves = ref(0);
+app.config.globalProperties.$globalTimerID = ref(0);
 app.component("fa", FontAwesomeIcon);
 app.mount("#app");
 

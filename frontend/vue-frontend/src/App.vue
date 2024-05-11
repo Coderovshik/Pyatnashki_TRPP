@@ -1,5 +1,6 @@
 <template>
-  <div @load="getAuthToken()" class="wrapper">
+  <div class="wrapper">
+    <!-- <RegWindow /> -->
     <Header />
     <Game />
   </div>
@@ -8,52 +9,60 @@
 <script>
 import Header from "./components/Header.vue";
 import Game from "./components/Game.vue";
+import AXIOS from "@/http-common";
 
 export default {
   name: "App",
   components: { Header, Game },
   data() {
-    return {
-      SECRET_KEY:
-        "92e17dc8bfac0842d5068f383dd93181e78ee27d3abdb3ed6df848c134b446e5",
-    };
+    return {};
   },
   methods: {
     async getAuthToken() {
-      console.log("Started");
       const data = { email: "test@email.com", password: "qwerty123" };
-      let res = await fetch("http://localhost:9999/api/v1/auth/register", {
-        method: "POST",
+      AXIOS.post("http://localhost:9999/api/v1/auth/register", data, {
         Headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      console.log(res.status);
-      res = await fetch("http://localhost:9999/api/v1/auth/authenticate", {
-        method: "POST",
-        Headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      console.log(res.status);
-      let token = await res.json();
-      res = await fetch("http://localhost:9999/api/v1/auth/authenticate", {
-        method: "GET",
-        Headers: {
-          Authorization: "Bearer " + token.token,
+          "Content-type": "application/json;charset=utf-8",
+          Accept: "application/json, text/plain",
         },
       });
-      data = res.json();
-      console.log(data);
+      console.log("Started");
+
+      // let res = await fetch("http://localhost:9999/api/v1/auth/register", {
+      //   method: "POST",
+      //   mode: "cors",
+      //   Headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(data),
+      // });
+      // console.log(res.status);
+      // res = await fetch("http://localhost:9999/api/v1/auth/authenticate", {
+      //   method: "POST",
+      //   Headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(data),
+      // });
+      // console.log(res.status);
+      // let token = await res.json();
+      // res = await fetch("http://localhost:9999/api/v1/auth/authenticate", {
+      //   method: "GET",
+      //   Headers: {
+      //     Authorization: "Bearer " + token.token,
+      //   },
+      // });
     },
+  },
+  mounted() {
+    this.getAuthToken();
   },
 };
 </script>
 
 <style lang="scss">
 #app {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-width: 100vw;

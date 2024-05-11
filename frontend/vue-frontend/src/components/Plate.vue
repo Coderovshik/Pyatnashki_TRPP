@@ -1,5 +1,7 @@
 <template>
-  <div @click="movePlates($event)" class="plate-wrapper">{{ value }}</div>
+  <div @click="movePlates($event)" class="plate-wrapper">
+    {{ value }}
+  </div>
 </template>
 
 <script>
@@ -9,8 +11,31 @@ export default {
     return {};
   },
   methods: {
+    checkWin(matrix) {
+      let x = 0;
+      let y = 0;
+      let win = true;
+      for (let i = 0; i < matrix.length * 4; i++) {
+        if (x >= 4) {
+          x = 0;
+          y++;
+        }
+        if (matrix[y][x] !== i + 1) {
+          win = false;
+        }
+        x++;
+      }
+      if (win) {
+        clearInterval(this.$globalTimerID.value);
+        const plates = document.querySelectorAll(".plate-wrapper");
+        for (let i = 0; i < plates.length; i++) {
+          plates[i].style.display = "none";
+        }
+        document.querySelector(".game-area").style.display = "flex";
+        document.querySelector(".win-wrapper").style.display = "flex";
+      }
+    },
     findCoods(matrix, plate) {
-      console.log(matrix);
       let x = 0;
       let y = 0;
       let plateCoords = {};
@@ -27,7 +52,6 @@ export default {
         }
         x++;
       }
-      console.log(plateCoords, sixteenCoords);
       return { plateCoords, sixteenCoords };
     },
     checkMovable(plate) {
@@ -47,7 +71,6 @@ export default {
       }
     },
     movePlates(event) {
-      console.log("CLICKED");
       const plate = event.target;
       const movable = this.checkMovable(plate);
       const result = movable.result;
@@ -65,6 +88,7 @@ export default {
       );
       this.$globalMatrix[plateCoords.y][plateCoords.x] = 16;
       this.$globalMoves.value++;
+      this.checkWin(this.$globalMatrix);
     },
   },
 };

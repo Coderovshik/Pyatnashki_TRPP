@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  props: { timer: Number, moves: Number },
+  props: { timer: Object, moves: Object },
   data() {
     return {};
   },

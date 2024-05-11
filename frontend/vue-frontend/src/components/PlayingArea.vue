@@ -1,6 +1,12 @@
 <template>
   <div class="playing-wrapper">
-    <div class="game-area">
+    <div @mousedown.prevent class="game-area">
+      <div class="win-wrapper">
+        <h1>
+          Вы победили за {{ $globalTime }} секунд и {{ $globalMoves }} ходов!
+        </h1>
+        <img src="../assets/fireworks-svgrepo-com.svg" alt="Фейрверк" />
+      </div>
       <Plate v-for="num in plates" :key="num" :value="num" />
     </div>
     <button @click="init()" class="game-button">Новая игра</button>
@@ -42,11 +48,19 @@ export default {
       }
     },
     init() {
+      const platesList = document.querySelectorAll(".plate-wrapper");
+      for (let i = 0; i < platesList.length; i++) {
+        platesList[i].style.display = "flex";
+      }
+      document.querySelector(".game-area").style.display = "grid";
+      document.querySelector(".win-wrapper").style.display = "none";
       this.plates = this.plates.sort(() => Math.random() - 0.5);
       this.createMatrix();
-      setInterval(() => {
+      this.$globalMoves.value = 0;
+      this.$globalTime.value = 0;
+      clearInterval(this.$globalTimerID.value);
+      this.$globalTimerID.value = setInterval(() => {
         this.$globalTime.value++;
-        console.log(this.$globalTime);
       }, 1000);
     },
   },
@@ -89,9 +103,29 @@ export default {
   line-height: 100%;
   color: #016a70;
   cursor: pointer;
+  transition: all 0.2s;
+  &:active {
+    background: #b7d397;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
+  }
 }
-
 .sixteen-plate {
   opacity: 0;
+}
+.win-wrapper {
+  font-family: Gilroy;
+  flex-direction: column;
+  width: 440px;
+  height: 490px;
+  background: #c6e5a2;
+  color: #016a70;
+  display: none;
+  text-align: center;
+  padding: 0 25px;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 70%;
+  }
 }
 </style>
