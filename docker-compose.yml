@@ -34,3 +34,24 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql_db/jwt_security
       - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_DATASOURCE_USERNAME=mark
+  migrator:
+    image: migrator:1.0
+    build:
+      context: migrator
+      dockerfile: Dockerfile
+    depends_on:
+      postgresql_db:
+        condition: service_healthy
+    env_file:
+      - migrator/config/.env
+  scoreboard:
+    image: scoreboard:1.0
+    build:
+      context: scoreboard
+      dockerfile: Dockerfile
+    depends_on:
+      - migrator
+    env_file:
+      - scoreboard/config/.env
+    ports:
+      - 8081:8080
