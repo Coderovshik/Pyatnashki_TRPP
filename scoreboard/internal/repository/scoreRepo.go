@@ -32,8 +32,8 @@ func (s *ScoreRepository) GetTopScores(ctx context.Context, limit int, offset in
 
 	const query = `
 		SELECT u.email, s.created_at, s.score_value
-		FROM users AS u
-		INNER JOIN score AS s ON u.user_id = s.user_id
+		FROM _user AS u
+		INNER JOIN score AS s ON u.id = s.user_id
 		WHERE s.score_value = (SELECT MAX(score_value) FROM score AS s2 WHERE s2.user_id = s.user_id)
 		ORDER BY s.score_value DESC
 		LIMIT $1 OFFSET $2`
@@ -65,7 +65,7 @@ func (s *ScoreRepository) GetTopScore(ctx context.Context, id int) {
 
 	const query = `
 		SELECT u.email, s.created_at, s.score_value
-		FROM users AS u
+		FROM _user AS u
 		INNER JOIN score AS s ON u.user_id = s.user_id
 		WHERE s.score_value = (SELECT MAX(score_value) FROM score AS s2 WHERE s2.user_id = s.user_id)`
 
