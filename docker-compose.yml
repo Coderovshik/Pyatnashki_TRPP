@@ -1,15 +1,15 @@
 version: "3.9"
 services:
-  # web:
-  #   build:
-  #     context: frontend/vue-frontend
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "8080:80"
-  #   environment:
-  #     NODE_ENV: production
-  #   depends_on:
-  #     - backend
+  web:
+    build:
+      context: frontend/vue-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - backend
   postgresql_db:
     image: postgres:16
     ports:
