@@ -114,11 +114,13 @@ export default {
         }
       )
         .then((response) => {
+          console.log(response.data);
           localStorage.setItem("authorized", true);
           localStorage.setItem("userId", response.data.id);
           localStorage.setItem("userName", response.data.username);
           this.closeForm(".log-form");
           document.querySelector(".reg-window").style.display = "none";
+          location.reload();
         })
         .catch((e) => {});
     },
