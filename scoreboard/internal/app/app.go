@@ -28,10 +28,10 @@ func NewApp(cfg *config.Config) *App {
 	r.HandleFunc("GET /top-scores", c.GetTopScores)
 
 	r.HandleFunc("OPTIONS /top-scores", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Headers", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
-		w.WriteHeader(http.StatusOK)
 	})
 	r.HandleFunc("POST /scores", c.SetScore)
 
