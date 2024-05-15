@@ -25,6 +25,12 @@ func NewApp(cfg *config.Config) *App {
 	s := service.NewScoreService(log, repo)
 	c := controller.NewScoreController(log, s)
 
+	r.HandleFunc("OPTIONS /top-scores", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.WriteHeader(http.StatusOK)
+	})
 	r.HandleFunc("GET /top-scores", c.GetTopScores)
 
 	r.HandleFunc("OPTIONS /scores", func(w http.ResponseWriter, r *http.Request) {
