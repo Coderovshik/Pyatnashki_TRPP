@@ -35,7 +35,9 @@ export default {
         }
         document.querySelector(".game-area").style.display = "flex";
         document.querySelector(".win-wrapper").style.display = "flex";
-        const score = { score: this.$globalMoves + this.$globalTime };
+        const score = {
+          score: this.$globalMoves.value + this.$globalTime.value,
+        };
         AXIOS.post(
           "http://localhost:8081/scores?user_id=" +
             localStorage.getItem("UserId"),
@@ -45,7 +47,9 @@ export default {
               "Content-type": "application/json",
             },
           }
-        );
+        ).then((response) => {
+          console.log(response);
+        });
       }
     },
     findCoods(matrix, plate) {

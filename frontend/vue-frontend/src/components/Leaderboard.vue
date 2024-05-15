@@ -17,7 +17,7 @@
             stroke="#C1B227"
           />
         </svg>
-        <p>{{ this.leaders.leader1 }} - {{ this.points.player1 }} очков</p>
+        <p>{{ this.leaders[0].email }} - {{ this.leaders[0].score }} очков</p>
       </div>
       <div class="leader">
         <svg
@@ -33,7 +33,7 @@
             stroke="#ABABAB"
           />
         </svg>
-        <p>{{ this.leaders.leader2 }} - {{ this.points.player2 }} очков</p>
+        <p>{{ this.leaders[1].email }} - {{ this.leaders[1].score }} очков</p>
       </div>
       <div class="leader">
         <svg
@@ -49,7 +49,7 @@
             stroke="#A36D1D"
           />
         </svg>
-        <p>{{ this.leaders.leader3 }} - {{ this.points.player3 }} очков</p>
+        <p>{{ this.leaders[2].email }} - {{ this.leaders[2].score }} очков</p>
       </div>
     </div>
   </div>
@@ -61,23 +61,20 @@ import AXIOS from "@/http-common";
 export default {
   data() {
     return {
-      leaders: {
-        leader1: "Username",
-        leader2: "Username",
-        leader3: "Username",
-      },
-      points: {
-        player1: 0,
-        player2: 0,
-        player3: 0,
-      },
+      leaders: [
+        { email: "User", score: "0" },
+        { email: "User", score: "0" },
+        { email: "User", score: "0" },
+      ],
     };
   },
   methods: {
     getLeaders() {
       AXIOS.get("http://localhost:8081/top-scores?limit=3&offset=0")
         .then((response) => {
-          this.leaders = response.data;
+          for (let i = 0; i < response.data.length; i++) {
+            response.data[i] ? (this.leaders[i] = response.data[i]) : true;
+          }
         })
         .catch((e) => {});
     },
