@@ -35,7 +35,7 @@ func (s *ScoreRepository) GetTopScores(ctx context.Context, limit int, offset in
 		FROM _user AS u
 		INNER JOIN score AS s ON u.id = s.user_id
 		WHERE s.score_value = (SELECT MAX(score_value) FROM score AS s2 WHERE s2.user_id = s.user_id)
-		ORDER BY s.score_value DESC
+		ORDER BY s.score_value ASC
 		LIMIT $1 OFFSET $2`
 
 	rows, err := s.db.QueryContext(ctx, query, limit, offset)
