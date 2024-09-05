@@ -72,8 +72,10 @@ export default {
     getLeaders() {
       AXIOS.get("http://localhost:8081/top-scores?limit=3&offset=0")
         .then((response) => {
+          const _ = require("lodash");
+          const sortedRespData = _.sortBy(response.data, ["score"]);
           for (let i = 0; i < response.data.length; i++) {
-            response.data[i] ? (this.leaders[i] = response.data[i]) : true;
+            sortedRespData[i] ? (this.leaders[i] = sortedRespData[i]) : true;
           }
         })
         .catch((e) => {});
@@ -92,9 +94,10 @@ export default {
   align-items: center;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.3);
   background: #c6e5a2;
+  padding: 10px 20px;
   border: 2px solid #016a70;
   border-radius: 15px;
-  width: 280px;
+  width: auto;
   height: 231px;
   font-family: Gilroy;
   h2 {
