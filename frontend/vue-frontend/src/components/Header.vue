@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <h1 class="game-name">Tag Game</h1>
-    <div class="user">
+    <div style="display: none" class="user">
       <h2>{{ username }}</h2>
       <div class="user-icon">
         <fa icon="user" class="fa-user" />
@@ -15,10 +15,10 @@
 export default {
   data() {
     return {
-      username: localStorage.getItem("userName"),
-    };
+      username: localStorage.getItem('userName'),
+    }
   },
-};
+}
 </script>
 
 <style scoped lang="scss">

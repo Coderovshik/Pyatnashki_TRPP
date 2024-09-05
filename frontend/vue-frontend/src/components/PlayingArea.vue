@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Plate from "./Plate.vue";
+import Plate from './Plate.vue'
 
 export default {
   components: { Plate },
@@ -22,52 +22,50 @@ export default {
     return {
       plates: [...Array(16).keys()].map((i) => i + 1),
       timer: 0,
-    };
+    }
   },
   methods: {
     createMatrix() {
-      let x = 0;
-      let y = 0;
+      let x = 0
+      let y = 0
       for (let i = 0; i < this.plates.length; i++) {
         if (x >= 4) {
-          x = 0;
-          y++;
+          x = 0
+          y++
         }
-        this.$globalMatrix[y][x] = this.plates[i];
-        x++;
+        this.$globalMatrix[y][x] = this.plates[i]
+        x++
       }
     },
     setInvisiblePlate() {
-      const platesList = Array.from(
-        document.querySelectorAll(".plate-wrapper")
-      );
+      const platesList = Array.from(document.querySelectorAll('.plate-wrapper'))
       for (let i = 0; i < platesList.length; i++) {
-        if (platesList[i].innerText === "16") {
-          platesList[i].classList.add("sixteen-plate");
+        if (platesList[i].innerText === '16') {
+          platesList[i].classList.add('sixteen-plate')
         }
       }
     },
     init() {
-      const platesList = document.querySelectorAll(".plate-wrapper");
+      const platesList = document.querySelectorAll('.plate-wrapper')
       for (let i = 0; i < platesList.length; i++) {
-        platesList[i].style.display = "flex";
+        platesList[i].style.display = 'flex'
       }
-      document.querySelector(".game-area").style.display = "grid";
-      document.querySelector(".win-wrapper").style.display = "none";
-      this.plates = this.plates.sort(() => Math.random() - 0.5);
-      this.createMatrix();
-      this.$globalMoves.value = 0;
-      this.$globalTime.value = 0;
-      clearInterval(this.$globalTimerID.value);
+      document.querySelector('.game-area').style.display = 'grid'
+      document.querySelector('.win-wrapper').style.display = 'none'
+      this.plates = this.plates.sort(() => Math.random() - 0.5)
+      this.createMatrix()
+      this.$globalMoves.value = 100500
+      this.$globalTime.value = 0
+      clearInterval(this.$globalTimerID.value)
       this.$globalTimerID.value = setInterval(() => {
-        this.$globalTime.value++;
-      }, 1000);
+        this.$globalTime.value++
+      }, 200)
     },
   },
   mounted() {
-    this.setInvisiblePlate();
+    this.setInvisiblePlate()
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

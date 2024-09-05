@@ -5,110 +5,110 @@
 </template>
 
 <script>
-import AXIOS from "@/http-common";
+import AXIOS from '@/http-common'
 
 export default {
   props: { value: Number },
   data() {
-    return {};
+    return {}
   },
   methods: {
     checkWin(matrix) {
-      let x = 0;
-      let y = 0;
-      let win = true;
+      let x = 0
+      let y = 0
+      let win = true
       for (let i = 0; i < matrix.length * 4; i++) {
         if (x >= 4) {
-          x = 0;
-          y++;
+          x = 0
+          y++
         }
         if (matrix[y][x] !== i + 1) {
-          win = false;
+          win = false
         }
-        x++;
+        x++
       }
       if (win) {
-        clearInterval(this.$globalTimerID.value);
-        const plates = document.querySelectorAll(".plate-wrapper");
+        clearInterval(this.$globalTimerID.value)
+        const plates = document.querySelectorAll('.plate-wrapper')
         for (let i = 0; i < plates.length; i++) {
-          plates[i].style.display = "none";
+          plates[i].style.display = 'none'
         }
-        document.querySelector(".game-area").style.display = "flex";
-        document.querySelector(".win-wrapper").style.display = "flex";
+        document.querySelector('.game-area').style.display = 'flex'
+        document.querySelector('.win-wrapper').style.display = 'flex'
         const score = {
           score: this.$globalMoves.value + this.$globalTime.value,
-        };
+        }
         AXIOS.post(
-          "http://localhost:8081/scores?user_id=" +
-            localStorage.getItem("UserId"),
+          'http://localhost:8081/scores?user_id=' +
+            localStorage.getItem('UserId'),
           score,
           {
             headers: {
-              "Content-type": "application/json",
+              'Content-type': 'application/json',
             },
           }
         ).then((response) => {
-          console.log(response);
-        });
+          console.log(response)
+        })
       }
     },
     findCoods(matrix, plate) {
-      let x = 0;
-      let y = 0;
-      let plateCoords = {};
-      let sixteenCoords = {};
+      let x = 0
+      let y = 0
+      let plateCoords = {}
+      let sixteenCoords = {}
       for (let i = 0; i < matrix.length * 4; i++) {
         if (x >= 4) {
-          x = 0;
-          y++;
+          x = 0
+          y++
         }
         if (matrix[y][x] === Number(plate.innerText)) {
-          plateCoords = { y, x };
+          plateCoords = { y, x }
         } else if (matrix[y][x] === 16) {
-          sixteenCoords = { y, x };
+          sixteenCoords = { y, x }
         }
-        x++;
+        x++
       }
-      return { plateCoords, sixteenCoords };
+      return { plateCoords, sixteenCoords }
     },
     checkMovable(plate) {
-      if (plate.innerText === "16") return false;
-      const coords = this.findCoods(this.$globalMatrix, plate);
-      let result = false;
+      if (plate.innerText === '16') return false
+      const coords = this.findCoods(this.$globalMatrix, plate)
+      let result = false
       if (
         (coords.plateCoords.y === coords.sixteenCoords.y &&
           Math.abs(coords.plateCoords.x - coords.sixteenCoords.x) === 1) ||
         (coords.plateCoords.x === coords.sixteenCoords.x &&
-          Math.abs(coords.sixteenCoords.y - coords.plateCoords.y) === 1)
+          Math.abs(coords.sixteenCoords.y + coords.plateCoords.y) === 1)
       ) {
-        result = true;
-        return { result, coords };
+        result = true
+        return { result, coords }
       } else {
-        return result;
+        return result
       }
     },
     movePlates(event) {
-      const plate = event.target;
-      const movable = this.checkMovable(plate);
-      const result = movable.result;
-      const coords = movable.coords;
-      if (!result) return;
-      const plateCoords = coords.plateCoords;
-      const sixteenCoords = coords.sixteenCoords;
-      const sixTeenPlate = document.querySelector(".sixteen-plate");
-      plate.style.gridColumn = sixteenCoords.x + 1;
-      plate.style.gridRow = sixteenCoords.y + 1;
-      sixTeenPlate.style.gridColumn = plateCoords.x + 1;
-      sixTeenPlate.style.gridRow = plateCoords.y + 1;
+      const plate = event.target
+      const movable = this.checkMovable(plate)
+      const result = movable.result
+      const coords = movable.coords
+      if (!result) return
+      const plateCoords = coords.plateCoords
+      const sixteenCoords = coords.sixteenCoords
+      const sixTeenPlate = document.querySelector('.sixteen-plate')
+      plate.style.gridColumn = sixteenCoords.x + 1
+      plate.style.gridRow = sixteenCoords.y + 1
+      sixTeenPlate.style.gridColumn = plateCoords.x + 1
+      sixTeenPlate.style.gridRow = plateCoords.y + 1
       this.$globalMatrix[sixteenCoords.y][sixteenCoords.x] = Number(
         plate.innerText
-      );
-      this.$globalMatrix[plateCoords.y][plateCoords.x] = 16;
-      this.$globalMoves.value++;
-      this.checkWin(this.$globalMatrix);
+      )
+      this.$globalMatrix[plateCoords.y][plateCoords.x] = 16
+      this.$globalMoves.value++
+      this.checkWin(this.$globalMatrix)
     },
   },
-};
+}
 </script>
 
 <style lang="scss">
