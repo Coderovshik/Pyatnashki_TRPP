@@ -9,7 +9,7 @@
       </div>
       <Plate v-for="num in plates" :key="num" :value="num" />
     </div>
-    <button @click.once="init()" class="game-button">Новая игра</button>
+    <button @click="init()" class="game-button">Новая игра</button>
   </div>
 </template>
 
@@ -60,7 +60,6 @@ export default {
       this.$globalTimerID.value = setInterval(() => {
         this.$globalTime.value++
       }, 200)
-      document.querySelector('.game-button').style.backgroundColor = '#eeeeee'
     },
   },
   mounted() {
