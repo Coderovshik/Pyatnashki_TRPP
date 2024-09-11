@@ -26,17 +26,19 @@ func NewApp(cfg *config.Config) *App {
 	c := controller.NewScoreController(log, s)
 
 	r.HandleFunc("OPTIONS /top-scores", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
 		w.Header().Set("Access-Control-Allow-Headers", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, HEAD")
+		w.Header().Set("Access-Control-Expose-Headers", "Content-Length")
 		w.WriteHeader(http.StatusOK)
 	})
 	r.HandleFunc("GET /top-scores", c.GetTopScores)
 
 	r.HandleFunc("OPTIONS /scores", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
 		w.Header().Set("Access-Control-Allow-Headers", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, HEAD")
+		w.Header().Set("Access-Control-Expose-Headers", "Content-Length")
 		w.WriteHeader(http.StatusOK)
 	})
 	r.HandleFunc("POST /scores", c.SetScore)

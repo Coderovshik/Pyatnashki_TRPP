@@ -23,6 +23,7 @@ func NewScoreController(log *slog.Logger, service *service.ScoreService) *ScoreC
 func (s *ScoreController) GetTopScores(w http.ResponseWriter, r *http.Request) {
 	const op = "ScoreController.GetTopScores"
 	log := s.log.With(slog.String("op", op))
+	log.Warn("Top scores")
 
 	limitParam := r.URL.Query().Get("limit")
 	limit, err := strconv.Atoi(limitParam)
@@ -47,8 +48,12 @@ func (s *ScoreController) GetTopScores(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
 	w.Header().Set("content-type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, HEAD")
+	w.Header().Set("Access-Control-Expose-Headers", "Content-Length")
+	w.WriteHeader(http.StatusOK)
 	jsonBytes, _ := json.Marshal(scores)
 	w.Write(jsonBytes)
 }
@@ -82,6 +87,9 @@ func (s *ScoreController) SetScore(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, HEAD")
+	w.Header().Set("Access-Control-Expose-Headers", "Content-Length")
 	w.WriteHeader(http.StatusOK)
 }
