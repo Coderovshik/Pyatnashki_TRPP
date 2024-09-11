@@ -18,10 +18,10 @@
 export default {
   props: { timer: Object, moves: Object },
   data() {
-    return {};
+    return {}
   },
   methods: {},
-};
+}
 </script>
 
 <style scoped lang="scss">
